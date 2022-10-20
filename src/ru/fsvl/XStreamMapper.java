@@ -16,6 +16,7 @@ import java.util.Collection;
  */
 public class XStreamMapper {
     private static volatile XStreamMapper instance;
+    private String[] wildCard;
 
     public static XStreamMapper getInstance() {
         XStreamMapper localInstance = instance;
@@ -99,9 +100,7 @@ public class XStreamMapper {
         xStream.allowTypeHierarchy(Collection.class);
         xStream.addPermission(NullPermission.NULL);
         xStream.addPermission(PrimitiveTypePermission.PRIMITIVES);
-        xStream.allowTypesByWildcard(new String[] {
-                "ru.catssoftware.xstream.**"
-        });
+        xStream.allowTypesByWildcard(wildCard);
         return xStream;
     }
 
@@ -145,5 +144,14 @@ public class XStreamMapper {
         XStream xs = new XStream();
         xs.processAnnotations(data.getClass());
         return (T) xs.toXML(data);
+    }
+
+    /**
+     * Устанавливает разрешение на манипуляции с классами по данному пути
+     * Например: org.myPackage.**
+     * @param val
+     */
+    public void setWildCard(String[] val) {
+        this.wildCard = val;
     }
 }
