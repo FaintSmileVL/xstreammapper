@@ -131,6 +131,7 @@ public class XStreamMapper {
     public <T> void write(T data, OutputStream outputStream, char[] indent) {
         XStream xstream = new XStream();
         xstream.processAnnotations(data.getClass());
+        xstream.aliasSystemAttribute(null, "class");
         xstream.marshal(data,
                 new PrettyPrintWriter(
                         new OutputStreamWriter(
